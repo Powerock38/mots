@@ -81,7 +81,7 @@ settingsSecondaryColor.onchange = () => {
 settingsSecondaryColor.onchange()
 
 const settingsLetterShape = document.getElementById('settings-letter-shape')
-settingsLetterShape.value = localStorage.getItem('settings-letter-shape') || 'none'
+settingsLetterShape.value = localStorage.getItem('settings-letter-shape') || 'url(assets/hexagon.svg)'
 settingsLetterShape.onchange = () => {
   cssRoot.style.setProperty('--letter-shape', settingsLetterShape.value)
   localStorage.setItem('settings-letter-shape', settingsLetterShape.value)
