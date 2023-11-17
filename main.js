@@ -209,8 +209,9 @@ function checkSolution() {
     console.log("le mot n'est pas dans la liste des solutions")
     wordInputWrapper.classList.add('error')
     setTimeout(() => {
+      wordInput.value = ''
       wordInputWrapper.classList.remove('error')
-    }, 500)
+    }, 800)
   }
 }
 
