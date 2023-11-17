@@ -229,7 +229,6 @@ function game() {
 
     letter.onclick = () => {
       wordInput.value += letters[i].toUpperCase()
-      wordInput.focus()
     }
   }
 
