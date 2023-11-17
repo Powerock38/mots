@@ -74,6 +74,7 @@ body {
   font-size: 300%;
   display: flex;
   justify-content: space-between;
+  user-select: none;
 }
 
 #letter-col {
