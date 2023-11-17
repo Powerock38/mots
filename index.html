@@ -2,25 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
     <title>MOTS</title>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
     <link rel="stylesheet" href="style.css" />
     <script src="main.js" type="module"></script>
   </head>
 
   <body>
-    <div id="reset-wrapper">
-      <button id="reset-button">Recommencer ?</button>
-      <div id="reset-prompt">
-        <button id="reset-yes">Recommencer !</button>
-        <button id="reset-no">Annuler</button>
-      </div>
+    <div id="word-input-wrapper">
+      <input id="word-input" type="text" placeholder="..." />
+      <button id="word-backspace">&lt;</button>
+      <button id="word-submit">✓</button>
     </div>
 
-    <div id="word-input-wrapper">
-      <input id="word-input" type="text" placeholder="Entrez un mot" />
-      <button id="word-submit">Valider</button>
-      <button id="word-backspace">X</button>
-    </div>
+    <div id="score"></div>
 
     <div id="letters-wrapper">
       <div id="letters">
@@ -40,9 +39,51 @@
       </div>
     </div>
 
-    <div id="solutions-wrapper">
-      <div id="score"></div>
-      <ul id="solutions"></ul>
+    <div id="solutions"></div>
+
+    <div id="reset-wrapper">
+      <button id="reset-button">Recommencer ?</button>
+      <div id="reset-prompt">
+        <button id="reset-yes">Recommencer !</button>
+        <button id="reset-no">Annuler</button>
+      </div>
+    </div>
+
+    <button id="settings-button">⚙</button>
+    <div id="settings-overlay">
+      <label>
+        Couleur primaire
+        <input id="settings-primary-color" type="color" />
+      </label>
+
+      <label>
+        Couleur secondaire
+        <input id="settings-secondary-color" type="color" />
+      </label>
+
+      <label>
+        Forme des lettres
+        <select id="settings-letter-shape">
+          <option value="none">Carré</option>
+          <option value="url(assets/hexagon.svg)">Hexagone</option>
+          <option value="url(assets/heart.svg)">Coeur</option>
+          <option value="url(assets/star.svg)">Étoile</option>
+        </select>
+      </label>
+
+      <label>
+        Fond d'écran
+        <select id="settings-wallpaper">
+          <option value="none">Aucun</option>
+          <option value="url(assets/fire.gif)">Feu</option>
+          <option value="url(assets/halloween-cat.gif)">Chat halloween</option>
+          <option value="url(assets/galaxies.gif)">Galaxies</option>
+          <option value="url(assets/night-sky.gif)">Ciel de nuit</option>
+          <option value="url(assets/snowman.gif)">Neige</option>
+          <option value="url(assets/space-cat.gif)">Chat de l'espace</option>
+          <option value="url(assets/sunset-beach.gif)">Plage</option>
+        </select>
+      </label>
     </div>
   </body>
 </html>
