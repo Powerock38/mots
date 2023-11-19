@@ -5,7 +5,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
+  touch-action: manipulation;
   background: var(--wallpaper) no-repeat center center fixed;
   background-size: cover;
 }
