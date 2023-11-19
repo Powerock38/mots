@@ -112,6 +112,8 @@ function addSolutionsFound(solutions) {
   updateSolutionsFound()
 }
 
+const definitionFrame = document.getElementById('definition-frame')
+
 function updateSolutionsFound() {
   const { solutions, solutionsFound } = getSave()
 
@@ -120,9 +122,12 @@ function updateSolutionsFound() {
   solutionsFound.sort()
 
   for (const solution of solutionsFound) {
-    const solutionLi = document.createElement('div')
-    solutionLi.innerText = solution.toUpperCase()
-    solutionsDiv.appendChild(solutionLi)
+    const solutionElement = document.createElement('a')
+    solutionElement.innerText = solution.toUpperCase()
+    solutionElement.href = "https://dictionnaire.lerobert.com/definition/" + solution
+    solutionElement.target = "_blank"
+    solutionElement.rel = "noopener noreferrer"
+    solutionsDiv.appendChild(solutionElement)
   }
 
   scoreDiv.innerText = solutionsFound.length + " / " + solutions.length

@@ -119,8 +119,9 @@ body {
 
 #solutions,
 #score {
-  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
-    1px 1px 0 #fff;
+  text-shadow: -1px -1px 0 var(--secondary), 1px -1px 0 var(--secondary),
+    -1px 1px 0 var(--secondary), 1px 1px 0 var(--secondary);
+  color: var(--primary);
 }
 
 #solutions {
@@ -131,9 +132,17 @@ body {
   margin-bottom: 70px;
 }
 
-#solutions > div {
+@media (min-width: 800px) {
+  #solutions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+#solutions > * {
   max-width: 100%;
   text-align: center;
+  color: inherit;
+  text-decoration: none;
 
   overflow: hidden;
   text-overflow: ellipsis;
