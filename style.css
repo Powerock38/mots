@@ -213,6 +213,7 @@ body {
   color: white;
   padding: 10px;
 
+  display: flex;
   flex-direction: column;
   gap: 10px;
 }
@@ -221,6 +222,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+#settings-letters {
+  font-family: monospace;
+  width: 7ch;
 }
 
 button {

@@ -18,6 +18,8 @@ wordSubmit.onclick = () => {
 }
 
 document.addEventListener('keydown', e => {
+  if (settingsOverlayWrapper.classList.contains('show')) return
+
   if (e.key === 'Backspace') {
     e.preventDefault()
     wordBackspace.click()
@@ -65,6 +67,8 @@ settingsButton.onclick = () => {
   } else {
     settingsOverlayWrapper.classList.add('show')
   }
+
+  settingsLetter.value = getSave().letters
 }
 
 settingsOverlayWrapper.onclick = e => {
@@ -107,6 +111,24 @@ settingsWallpaper.onchange = () => {
   localStorage.setItem('settings-wallpaper', settingsWallpaper.value)
 }
 settingsWallpaper.onchange()
+
+// SET LETTERS
+const settingsLetter = document.getElementById('settings-letters')
+settingsLetter.onclick = () => {
+  if (document.activeElement !== settingsLetter) {
+    settingsLetter.select()
+  }
+}
+settingsLetter.onchange = () => {
+  settingsLetter.value = settingsLetter.value.toLowerCase().replace(/[^a-z]/g, '')
+  if (settingsLetter.value.length === 7
+    && new Set(settingsLetter.value).size === settingsLetter.value.length
+    && confirm(`Recommencer avec les lettres '${settingsLetter.value}' ?`)
+  ) {
+    localStorage.setItem('save', JSON.stringify({ letters: settingsLetter.value }))
+    game()
+  }
+}
 
 // GAME
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
@@ -162,6 +184,10 @@ function updateScore() {
   }
 }
 
+function generateSolutions(letters) {
+  return WORDLIST.filter(word => word && word.split('').some(letter => letter === letters[0]) && word.split('').every(letter => letters.includes(letter)))
+}
+
 function getSave() {
   let save;
 
@@ -171,14 +197,13 @@ function getSave() {
     console.warn(e)
   }
 
-  if (!save || !save.letters || !save.solutions) {
+  if (!save || !save.letters) {
     let solutions = []
     let letters = ""
 
     let tries = 0
 
     while (solutions.length < MIN_SOLUTIONS) {
-      solutions = []
       letters = ""
 
       let alphabet = ALPHABET
@@ -187,11 +212,7 @@ function getSave() {
         alphabet = alphabet.replace(letters[i], '')
       }
 
-      for (const word of WORDLIST) {
-        if (word && word.split('').some(letter => letter === letters[0]) && word.split('').every(letter => letters.includes(letter))) {
-          solutions.push(word)
-        }
-      }
+      solutions = generateSolutions(letters)
 
       tries++
     }
@@ -205,6 +226,11 @@ function getSave() {
       hintsBought: 0,
     }
 
+    localStorage.setItem('save', JSON.stringify(save))
+  }
+
+  if (!save.solutions) {
+    save.solutions = generateSolutions(save.letters)
     localStorage.setItem('save', JSON.stringify(save))
   }
 
