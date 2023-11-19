@@ -10,36 +10,48 @@ body {
   background-size: cover;
 }
 
-#word-input-wrapper {
-  display: flex;
-  justify-content: space-between;
-  width: 90%;
-  margin: 20px;
-}
-
 #word-input {
-  width: 100%;
+  margin: 20px 20px 0 20px;
+  width: 90%;
   font-size: 200%;
   text-transform: uppercase;
   border: 2px solid var(--primary);
-  border-right: none;
+  border-bottom-width: 1px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
-#word-backspace {
-  border-right: none;
+#word-buttons-wrapper {
+  margin: 0 20px 20px 20px;
+  display: flex;
+  width: calc(90% + 8px);
 }
 
 #word-submit,
 #word-backspace {
   font-size: 200%;
+  font-weight: bold;
+  width: 100%;
+  border-top-width: 1px;
 }
 
-#word-input-wrapper.error {
+#word-backspace {
+  border-right: none;
+  border-bottom-left-radius: 5px;
+}
+
+#word-submit {
+  border-bottom-right-radius: 5px;
+}
+
+#word-input.error {
   animation: horizontal-shaking 0.5s ease-in-out;
+  background-color: red;
+  color: white;
 }
 
-#word-input-wrapper.error #word-input {
-  background-color: red;
+#word-input.error + #word-buttons-wrapper {
+  animation: horizontal-shaking 0.5s ease-in-out;
 }
 
 @keyframes horizontal-shaking {
@@ -115,7 +127,8 @@ body {
   width: 90%;
   font-size: 175%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 70px;
 }
 
 #solutions > div {
@@ -127,24 +140,32 @@ body {
   white-space: nowrap;
 }
 
-#reset-wrapper {
+.confirm {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
   display: flex;
   justify-content: flex-end;
 }
 
-#reset-prompt {
+.confirm > div {
   display: none;
 }
 
-#reset-wrapper.show #reset-prompt {
+.confirm.show > div {
   display: block;
 }
 
-#reset-wrapper.show #reset-button {
+.confirm.show > button {
   display: none;
+}
+
+#reset-wrapper {
+  bottom: 10px;
+  right: 10px;
+}
+
+#giveup-wrapper {
+  bottom: 40px;
+  right: 10px;
 }
 
 #settings-button {
@@ -157,7 +178,7 @@ body {
 #settings-overlay {
   display: none;
   position: fixed;
-  bottom: 10%;
+  bottom: 7%;
   left: 5%;
   width: 85%;
   background-color: rgba(0, 0, 0, 0.9);
@@ -183,4 +204,5 @@ button {
   font-size: 100%;
   border: 2px solid var(--primary);
   background-color: var(--secondary);
+  color: var(--primary);
 }

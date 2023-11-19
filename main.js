@@ -1,7 +1,6 @@
-const MIN_SOLUTIONS = 10
+const MIN_SOLUTIONS = 50
 
 // WORD INPUT
-const wordInputWrapper = document.getElementById('word-input-wrapper')
 const wordInput = document.getElementById('word-input')
 const solutionsDiv = document.getElementById('solutions')
 const scoreDiv = document.getElementById('score')
@@ -22,32 +21,37 @@ document.addEventListener('keydown', e => {
     wordBackspace.click()
   } else if (e.key === 'Enter') {
     wordSubmit.click()
-  } else if (e.key === 'Escape') {
-    resetButton.click()
   }
 
   wordInput.focus()
 })
 
-// RESET
-const resetWrapper = document.getElementById('reset-wrapper')
-const resetButton = document.getElementById('reset-button')
-const resetYes = document.getElementById('reset-yes')
-const resetNo = document.getElementById('reset-no')
-resetButton.onclick = () => {
-  resetWrapper.classList.add('show')
-  setTimeout(() => {
-    resetWrapper.classList.remove('show')
-  }, 3000)
-}
+// CONFIRM : RESET & GIVE UP
+for (const confirm of document.querySelectorAll('.confirm')) {
+  const confirmButton = confirm.querySelector(':scope > button')
+  const confirmYes = confirm.querySelector(':scope > div > button:first-child')
+  const confirmNo = confirm.querySelector(':scope > div > button:last-child')
 
-resetYes.onclick = () => {
-  resetSave()
-  resetWrapper.classList.remove('show')
-}
+  let timeout = null
 
-resetNo.onclick = () => {
-  resetWrapper.classList.remove('show')
+  confirmButton.onclick = () => {
+    confirm.classList.add('show')
+    timeout = setTimeout(() => {
+      confirm.classList.remove('show')
+    }, 3000)
+  }
+
+  const action = confirm.getAttribute('data-action')
+  confirmYes.onclick = () => {
+    eval(action)
+    confirm.classList.remove('show')
+    clearTimeout(timeout)
+  }
+
+  confirmNo.onclick = () => {
+    confirm.classList.remove('show')
+    clearTimeout(timeout)
+  }
 }
 
 // SETTINGS: SHOW OVERLAY
@@ -100,9 +104,9 @@ settingsWallpaper.onchange()
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 const WORDLIST = await fetch('mots.txt').then(res => res.text()).then(text => text.split('\n'))
 
-function addSolutionFound(solution) {
+function addSolutionsFound(solutions) {
   const save = getSave()
-  save.solutionsFound.push(solution)
+  save.solutionsFound = [...new Set([...save.solutionsFound, ...solutions])]
   localStorage.setItem('save', JSON.stringify(save))
 
   updateSolutionsFound()
@@ -148,6 +152,8 @@ function getSave() {
     let solutions = []
     let letters = ""
 
+    let tries = 0
+
     while (solutions.length < MIN_SOLUTIONS) {
       solutions = []
       letters = ""
@@ -163,7 +169,11 @@ function getSave() {
           solutions.push(word)
         }
       }
+
+      tries++
     }
+
+    console.log("tries", tries)
 
     save = {
       letters,
@@ -187,35 +197,33 @@ function checkSolution() {
   const input = wordInput.value.toLowerCase()
   const { solutions, solutionsFound } = getSave()
 
-  if (input === "iwanttocheat") {
-    for (const solution of solutions) {
-      if (!solutionsFound.includes(solution)) {
-        addSolutionFound(solution)
-      }
-    }
-    wordInput.value = ''
-    return
-  }
-
   if (solutions.includes(input)) {
     if (!solutionsFound.includes(input)) {
-      addSolutionFound(input)
-
-      wordInput.value = ''
+      addSolutionsFound([input])
     } else {
       console.log("le mot a déjà été trouvé")
     }
+
+    wordInput.value = ''
   } else {
     console.log("le mot n'est pas dans la liste des solutions")
-    wordInputWrapper.classList.add('error')
+    wordInput.classList.add('error')
     setTimeout(() => {
       wordInput.value = ''
-      wordInputWrapper.classList.remove('error')
+      wordInput.classList.remove('error')
     }, 800)
   }
 }
 
+function giveUp() {
+  const { solutions } = getSave()
+  addSolutionsFound(solutions)
+
+  wordInput.value = ''
+}
+
 function resetSave() {
+  wordInput.value = ''
   localStorage.removeItem('save')
   game()
 }
@@ -230,6 +238,7 @@ function game() {
 
     letter.onclick = () => {
       wordInput.value += letters[i].toUpperCase()
+      wordInput.scrollLeft = wordInput.scrollWidth
     }
   }
 
