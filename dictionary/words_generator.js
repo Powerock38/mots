@@ -1,8 +1,6 @@
 const fs = require('fs')
 
 const dico = [
-  ...fs.readFileSync('liste_francais.txt', 'utf-8').split('\n'),
-  ...fs.readFileSync('gutenberg.txt', 'utf-8').split('\n'),
   ...fs.readFileSync('ods6.txt', 'utf-8').split('\n'),
 ]
 
