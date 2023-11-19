@@ -256,11 +256,15 @@ function checkSolution() {
   if (solutions.includes(input)) {
     if (!solutionsFound.includes(input)) {
       addSolutionsFound([input])
+      wordInput.value = ''
     } else {
       console.log("le mot a déjà été trouvé")
+      wordInput.classList.add('warning')
+      setTimeout(() => {
+        wordInput.value = ''
+        wordInput.classList.remove('warning')
+      }, 800)
     }
-
-    wordInput.value = ''
   } else {
     console.log("le mot n'est pas dans la liste des solutions")
     wordInput.classList.add('error')

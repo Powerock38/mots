@@ -73,6 +73,31 @@ body {
   }
 }
 
+#word-input.warning,
+#word-input.warning + #word-buttons-wrapper {
+  animation: vertical-shaking 0.5s ease-in-out;
+  background-color: skyblue;
+  color: white;
+}
+
+@keyframes vertical-shaking {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(10%);
+  }
+  50% {
+    transform: translateY(-10%);
+  }
+  75% {
+    transform: translateY(10%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 #score {
   font-size: 200%;
   font-weight: bold;
