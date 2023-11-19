@@ -45,7 +45,7 @@
       <button>Abandonner ?</button>
       <div>
         <button>Abandonner !</button>
-        <button>Annuler</button>
+        <button>Non</button>
       </div>
     </div>
 
@@ -53,44 +53,55 @@
       <button>Recommencer ?</button>
       <div>
         <button>Recommencer !</button>
-        <button>Annuler</button>
+        <button>Non</button>
       </div>
     </div>
 
-    <button id="settings-button">⚙</button>
-    <div id="settings-overlay">
-      <label>
-        Couleur primaire
-        <input id="settings-primary-color" type="color" />
-      </label>
+    <div id="hint-wrapper" class="confirm" data-action="buyHint()">
+      <button class="icon-button">?</button>
+      <div>
+        <button>Indice (10 pts)</button>
+        <button>Non</button>
+      </div>
+    </div>
+    <button id="settings-button" class="icon-button">⚙</button>
+    <div id="settings-overlay-wrapper">
+      <div id="settings-overlay">
+        <label>
+          Couleur primaire
+          <input id="settings-primary-color" type="color" />
+        </label>
 
-      <label>
-        Couleur secondaire
-        <input id="settings-secondary-color" type="color" />
-      </label>
+        <label>
+          Couleur secondaire
+          <input id="settings-secondary-color" type="color" />
+        </label>
 
-      <label>
-        Forme des lettres
-        <select id="settings-letter-shape">
-          <option value="url(assets/hexagon.svg)">Hexagone</option>
-          <option value="url(assets/heart.svg)">Coeur</option>
-          <option value="url(assets/star.svg)">Étoile</option>
-        </select>
-      </label>
+        <label>
+          Forme des lettres
+          <select id="settings-letter-shape">
+            <option value="url(assets/hexagon.svg)">Hexagone</option>
+            <option value="url(assets/heart.svg)">Coeur</option>
+            <option value="url(assets/star.svg)">Étoile</option>
+          </select>
+        </label>
 
-      <label>
-        Fond d'écran
-        <select id="settings-wallpaper">
-          <option value="none">Aucun</option>
-          <option value="url(assets/fire.gif)">Feu</option>
-          <option value="url(assets/halloween-cat.gif)">Chat halloween</option>
-          <option value="url(assets/galaxies.gif)">Galaxies</option>
-          <option value="url(assets/night-sky.gif)">Ciel de nuit</option>
-          <option value="url(assets/snowman.gif)">Neige</option>
-          <option value="url(assets/space-cat.gif)">Chat de l'espace</option>
-          <option value="url(assets/sunset-beach.gif)">Plage</option>
-        </select>
-      </label>
+        <label>
+          Fond d'écran
+          <select id="settings-wallpaper">
+            <option value="none">Aucun</option>
+            <option value="url(assets/fire.gif)">Feu</option>
+            <option value="url(assets/halloween-cat.gif)">
+              Chat halloween
+            </option>
+            <option value="url(assets/galaxies.gif)">Galaxies</option>
+            <option value="url(assets/night-sky.gif)">Ciel de nuit</option>
+            <option value="url(assets/snowman.gif)">Neige</option>
+            <option value="url(assets/space-cat.gif)">Chat de l'espace</option>
+            <option value="url(assets/sunset-beach.gif)">Plage</option>
+          </select>
+        </label>
+      </div>
     </div>
   </body>
 </html>

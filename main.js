@@ -1,4 +1,6 @@
 const MIN_SOLUTIONS = 50
+const SOLUTION_POINTS_VALUE = 1
+const HINT_POINTS_VALUE = 10
 
 // WORD INPUT
 const wordInput = document.getElementById('word-input')
@@ -56,12 +58,18 @@ for (const confirm of document.querySelectorAll('.confirm')) {
 
 // SETTINGS: SHOW OVERLAY
 const settingsButton = document.getElementById('settings-button')
-const settingsOverlay = document.getElementById('settings-overlay')
+const settingsOverlayWrapper = document.getElementById('settings-overlay-wrapper')
 settingsButton.onclick = () => {
-  if (settingsOverlay.classList.contains('show')) {
-    settingsOverlay.classList.remove('show')
+  if (settingsOverlayWrapper.classList.contains('show')) {
+    settingsOverlayWrapper.classList.remove('show')
   } else {
-    settingsOverlay.classList.add('show')
+    settingsOverlayWrapper.classList.add('show')
+  }
+}
+
+settingsOverlayWrapper.onclick = e => {
+  if (e.target === settingsOverlayWrapper) {
+    settingsOverlayWrapper.classList.remove('show')
   }
 }
 
@@ -112,10 +120,8 @@ function addSolutionsFound(solutions) {
   updateSolutionsFound()
 }
 
-const definitionFrame = document.getElementById('definition-frame')
-
 function updateSolutionsFound() {
-  const { solutions, solutionsFound } = getSave()
+  const { solutionsFound } = getSave()
 
   solutionsDiv.innerHTML = ''
 
@@ -130,7 +136,19 @@ function updateSolutionsFound() {
     solutionsDiv.appendChild(solutionElement)
   }
 
+  updateScore()
+}
+
+function getPoints() {
+  const { solutionsFound, hintsBought } = getSave()
+  return (solutionsFound.length - hintsBought) * SOLUTION_POINTS_VALUE - hintsBought * HINT_POINTS_VALUE
+}
+
+function updateScore() {
+  const { solutions, solutionsFound } = getSave()
+
   scoreDiv.innerText = solutionsFound.length + " / " + solutions.length
+  scoreDiv.innerText += ` (${getPoints()} pts)`
   scoreDiv.innerText += "\n‎"
 
   if (solutionsFound.length === solutions.length) {
@@ -183,7 +201,8 @@ function getSave() {
     save = {
       letters,
       solutions,
-      solutionsFound: []
+      solutionsFound: [],
+      hintsBought: 0,
     }
 
     localStorage.setItem('save', JSON.stringify(save))
@@ -191,6 +210,12 @@ function getSave() {
 
   if (!save.solutionsFound) {
     save.solutionsFound = []
+    save.hintsBought = 0
+    localStorage.setItem('save', JSON.stringify(save))
+  }
+
+  if (save.hintsBought === undefined) {
+    save.hintsBought = 0
     localStorage.setItem('save', JSON.stringify(save))
   }
 
@@ -217,6 +242,26 @@ function checkSolution() {
       wordInput.value = ''
       wordInput.classList.remove('error')
     }, 800)
+  }
+}
+
+function buyHint(element) {
+  console.log(element)
+  const { solutions, solutionsFound, hintsBought } = getSave()
+
+  if (getPoints() >= HINT_POINTS_VALUE) {
+    const possibleHints = solutions.filter(solution => !solutionsFound.includes(solution))
+    if (possibleHints.length === 0) {
+      console.log("plus de solutions")
+      return
+    }
+    const hint = possibleHints[Math.floor(Math.random() * possibleHints.length)]
+    localStorage.setItem('save', JSON.stringify({ ...getSave(), hintsBought: hintsBought + 1 }))
+    updateScore()
+    wordInput.value = hint
+    addSolutionsFound([hint])
+  } else {
+    console.log("pas assez de points")
   }
 }
 

@@ -21,6 +21,10 @@ body {
   border-top-right-radius: 5px;
 }
 
+#word-input:focus {
+  outline: none;
+}
+
 #word-buttons-wrapper {
   margin: 0 20px 20px 20px;
   display: flex;
@@ -44,14 +48,11 @@ body {
   border-bottom-right-radius: 5px;
 }
 
-#word-input.error {
+#word-input.error,
+#word-input.error + #word-buttons-wrapper {
   animation: horizontal-shaking 0.5s ease-in-out;
   background-color: red;
   color: white;
-}
-
-#word-input.error + #word-buttons-wrapper {
-  animation: horizontal-shaking 0.5s ease-in-out;
 }
 
 @keyframes horizontal-shaking {
@@ -177,22 +178,39 @@ body {
   right: 10px;
 }
 
+#hint-wrapper {
+  bottom: 50px;
+  left: 10px;
+}
+
 #settings-button {
   position: fixed;
   bottom: 10px;
   left: 10px;
-  font-size: 150%;
+}
+
+#settings-overlay-wrapper {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 100;
+}
+
+#settings-overlay-wrapper.show {
+  display: block;
 }
 
 #settings-overlay {
-  display: none;
-  position: fixed;
-  bottom: 7%;
+  position: absolute;
+  bottom: 12%;
   left: 5%;
   width: 85%;
   background-color: rgba(0, 0, 0, 0.9);
   color: white;
-  z-index: 100;
   padding: 10px;
 
   flex-direction: column;
@@ -205,13 +223,14 @@ body {
   align-items: center;
 }
 
-#settings-overlay.show {
-  display: flex;
-}
-
 button {
   font-size: 100%;
   border: 2px solid var(--primary);
   background-color: var(--secondary);
   color: var(--primary);
+}
+
+.icon-button {
+  font-size: 150%;
+  width: 40px;
 }
