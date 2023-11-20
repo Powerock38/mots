@@ -68,7 +68,7 @@ settingsButton.onclick = () => {
     settingsOverlayWrapper.classList.add('show')
   }
 
-  settingsLetter.value = getSave().letters
+  settingsLetters.value = getSave().letters
 }
 
 settingsOverlayWrapper.onclick = e => {
@@ -113,19 +113,19 @@ settingsWallpaper.onchange = () => {
 settingsWallpaper.onchange()
 
 // SET LETTERS
-const settingsLetter = document.getElementById('settings-letters')
-settingsLetter.onclick = () => {
-  if (document.activeElement !== settingsLetter) {
-    settingsLetter.select()
+const settingsLetters = document.getElementById('settings-letters')
+settingsLetters.onclick = () => {
+  if (document.activeElement !== settingsLetters) {
+    settingsLetters.select()
   }
 }
-settingsLetter.onchange = () => {
-  settingsLetter.value = settingsLetter.value.toLowerCase().replace(/[^a-z]/g, '')
-  if (settingsLetter.value.length === 7
-    && new Set(settingsLetter.value).size === settingsLetter.value.length
-    && confirm(`Recommencer avec les lettres '${settingsLetter.value}' ?`)
+settingsLetters.onchange = () => {
+  settingsLetters.value = settingsLetters.value.toLowerCase().replace(/[^a-z]/g, '')
+  if (settingsLetters.value.length === 7
+    && new Set(settingsLetters.value).size === settingsLetters.value.length
+    && confirm(`Recommencer avec les lettres '${settingsLetters.value}' ?`)
   ) {
-    localStorage.setItem('save', JSON.stringify({ letters: settingsLetter.value }))
+    localStorage.setItem('save', JSON.stringify({ letters: settingsLetters.value }))
     game()
   }
 }
