@@ -1,5 +1,4 @@
 const MIN_SOLUTIONS = 50
-const SOLUTION_POINTS_VALUE = 1
 const HINT_POINTS_VALUE = 10
 
 // WORD INPUT
@@ -137,6 +136,7 @@ const WORDLIST = await fetch('mots.txt').then(res => res.text()).then(text => te
 function addSolutionsFound(solutions) {
   const save = getSave()
   save.solutionsFound = [...new Set([...save.solutionsFound, ...solutions])]
+  save.points += solutions.reduce((acc, solution) => acc + solution.length, 0)
   localStorage.setItem('save', JSON.stringify(save))
 
   updateSolutionsFound()
@@ -161,16 +161,11 @@ function updateSolutionsFound() {
   updateScore()
 }
 
-function getPoints() {
-  const { solutionsFound, hintsBought } = getSave()
-  return (solutionsFound.length - hintsBought) * SOLUTION_POINTS_VALUE - hintsBought * HINT_POINTS_VALUE
-}
-
 function updateScore() {
-  const { solutions, solutionsFound } = getSave()
+  const { solutions, solutionsFound, points } = getSave()
 
   scoreDiv.innerText = solutionsFound.length + " / " + solutions.length
-  scoreDiv.innerText += ` (${getPoints()} pts)`
+  scoreDiv.innerText += ` (${points} pts)`
   scoreDiv.innerText += "\n‎"
 
   if (solutionsFound.length === solutions.length) {
@@ -223,7 +218,7 @@ function getSave() {
       letters,
       solutions,
       solutionsFound: [],
-      hintsBought: 0,
+      points: 0,
     }
 
     localStorage.setItem('save', JSON.stringify(save))
@@ -236,12 +231,12 @@ function getSave() {
 
   if (!save.solutionsFound) {
     save.solutionsFound = []
-    save.hintsBought = 0
+    save.points = 0
     localStorage.setItem('save', JSON.stringify(save))
   }
 
-  if (save.hintsBought === undefined) {
-    save.hintsBought = 0
+  if (save.points === undefined) {
+    save.points = 0
     localStorage.setItem('save', JSON.stringify(save))
   }
 
@@ -275,19 +270,23 @@ function checkSolution() {
   }
 }
 
-function buyHint(element) {
-  console.log(element)
-  const { solutions, solutionsFound, hintsBought } = getSave()
+function buyHint() {
+  const save = getSave()
 
-  if (getPoints() >= HINT_POINTS_VALUE) {
-    const possibleHints = solutions.filter(solution => !solutionsFound.includes(solution))
+  if (save.points >= HINT_POINTS_VALUE) {
+    const possibleHints = save.solutions.filter(solution => !save.solutionsFound.includes(solution))
+
     if (possibleHints.length === 0) {
       console.log("plus de solutions")
       return
     }
+
     const hint = possibleHints[Math.floor(Math.random() * possibleHints.length)]
-    localStorage.setItem('save', JSON.stringify({ ...getSave(), hintsBought: hintsBought + 1 }))
-    updateScore()
+
+    save.points -= HINT_POINTS_VALUE + hint.length
+
+    localStorage.setItem('save', JSON.stringify(save))
+
     wordInput.value = hint
     addSolutionsFound([hint])
   } else {
