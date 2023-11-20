@@ -29,6 +29,14 @@ document.addEventListener('keydown', e => {
   wordInput.focus()
 })
 
+function addRemoveClass(element, className, duration, callback) {
+  element.classList.add(...className.split(' '))
+  return setTimeout(() => {
+    element.classList.remove(...className.split(' '))
+    if (callback) callback()
+  }, duration)
+}
+
 // CONFIRM : RESET & GIVE UP
 for (const confirm of document.querySelectorAll('.confirm')) {
   const confirmButton = confirm.querySelector(':scope > button')
@@ -38,10 +46,7 @@ for (const confirm of document.querySelectorAll('.confirm')) {
   let timeout = null
 
   confirmButton.onclick = () => {
-    confirm.classList.add('show')
-    timeout = setTimeout(() => {
-      confirm.classList.remove('show')
-    }, 3000)
+    timeout = addRemoveClass(confirm, 'show', 3000)
   }
 
   const action = confirm.getAttribute('data-action')
@@ -133,12 +138,15 @@ settingsLetters.onchange = () => {
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 const WORDLIST = await fetch('mots.txt').then(res => res.text()).then(text => text.split('\n'))
 
-function addSolutionsFound(solutions) {
+function addSolutionFoundNoUpdate(solution) {
   const save = getSave()
-  save.solutionsFound = [...new Set([...save.solutionsFound, ...solutions])]
-  save.points += solutions.reduce((acc, solution) => acc + solution.length, 0)
+  save.solutionsFound = [...new Set([...save.solutionsFound, solution])]
+  save.points += solution.length
   localStorage.setItem('save', JSON.stringify(save))
+}
 
+function addSolutionFound(solution) {
+  addSolutionFoundNoUpdate(solution)
   updateSolutionsFound()
 }
 
@@ -177,6 +185,8 @@ function updateScore() {
   } else if (solutionsFound.length >= solutions.length / 4) {
     scoreDiv.innerText += "PAS MAL 😃"
   }
+
+  addRemoveClass(scoreDiv, 'score-shake', 800)
 }
 
 function generateSolutions(letters) {
@@ -250,23 +260,19 @@ function checkSolution() {
 
   if (solutions.includes(input)) {
     if (!solutionsFound.includes(input)) {
-      addSolutionsFound([input])
+      addSolutionFound(input)
       wordInput.value = ''
     } else {
       console.log("le mot a déjà été trouvé")
-      wordInput.classList.add('warning')
-      setTimeout(() => {
+      addRemoveClass(wordInput, 'warning', 800, () => {
         wordInput.value = ''
-        wordInput.classList.remove('warning')
-      }, 800)
+      })
     }
   } else {
     console.log("le mot n'est pas dans la liste des solutions")
-    wordInput.classList.add('error')
-    setTimeout(() => {
+    addRemoveClass(wordInput, 'error', 800, () => {
       wordInput.value = ''
-      wordInput.classList.remove('error')
-    }, 800)
+    })
   }
 }
 
@@ -287,8 +293,15 @@ function buyHint() {
 
     localStorage.setItem('save', JSON.stringify(save))
 
-    wordInput.value = hint
-    addSolutionsFound([hint])
+    // pop up word
+    const wordDisplay = document.createElement('div')
+    wordDisplay.innerText = hint.toUpperCase()
+    document.body.appendChild(wordDisplay)
+    addRemoveClass(wordDisplay, 'pop-word text-outline', 3000, () => {
+      wordDisplay.remove()
+    })
+
+    addSolutionFound(hint)
   } else {
     console.log("pas assez de points")
   }
@@ -296,7 +309,10 @@ function buyHint() {
 
 function giveUp() {
   const { solutions } = getSave()
-  addSolutionsFound(solutions)
+  for (const solution of solutions) {
+    addSolutionFoundNoUpdate(solution)
+  }
+  updateSolutionsFound()
 
   wordInput.value = ''
 }

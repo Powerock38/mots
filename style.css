@@ -19,6 +19,7 @@ body {
   border-bottom-width: 1px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  text-align: center;
 }
 
 #word-input:focus {
@@ -104,6 +105,24 @@ body {
   text-align: center;
 }
 
+.score-shake {
+  animation: score-shake 0.5s ease-in-out;
+}
+
+
+@keyframes score-shake {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
 #letters-wrapper {
   margin: 10%;
 }
@@ -143,8 +162,7 @@ body {
   color: var(--primary);
 }
 
-#solutions,
-#score {
+.text-outline {
   text-shadow: -1px -1px 0 var(--secondary), 1px -1px 0 var(--secondary),
     -1px 1px 0 var(--secondary), 1px 1px 0 var(--secondary);
   color: var(--primary);
@@ -173,6 +191,66 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.pop-word {
+  animation: pop-word 3s ease-in-out;
+  display: flex !important;
+  position: fixed;
+  z-index: 100;
+  font-size: 300%;
+  text-align: center;
+  font-weight: bold;
+  aspect-ratio: 1;
+  min-width: 128px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pop-word::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(assets/shine.png) no-repeat center center;
+  background-size: 100% auto;
+  animation: spin 3s ease-in-out;
+  z-index: -1;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pop-word {
+  0% {
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  25% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+  }
 }
 
 .confirm {

@@ -14,12 +14,13 @@
 
   <body>
     <input id="word-input" type="text" placeholder="..." />
+
     <div id="word-buttons-wrapper">
       <button id="word-backspace">⌫</button>
       <button id="word-submit">✓</button>
     </div>
 
-    <div id="score"></div>
+    <div id="score" class="text-outline"></div>
 
     <div id="letters-wrapper">
       <div id="letters">
@@ -39,7 +40,7 @@
       </div>
     </div>
 
-    <div id="solutions"></div>
+    <div id="solutions" class="text-outline"></div>
 
     <div id="giveup-wrapper" class="confirm" data-action="giveUp()">
       <button>Abandonner ?</button>
