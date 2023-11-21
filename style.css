@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: var(--font);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,12 +10,23 @@ body {
   background-size: cover;
 }
 
+@font-face {
+  font-family: "Poppins";
+  src: url(assets/poppins-regular.woff2);
+}
+
+@font-face {
+  font-family: "Comic Sans MS";
+  src: url(assets/comic-sans-ms.woff2);
+}
+
 #word-input {
+  font-family: var(--font);
   margin: 20px 20px 0 20px;
   width: 90%;
   font-size: 200%;
   text-transform: uppercase;
-  border: 2px solid var(--primary);
+  border: 2px solid var(--primary-color);
   border-bottom-width: 1px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -109,7 +120,6 @@ body {
   animation: score-shake 0.5s ease-in-out;
 }
 
-
 @keyframes score-shake {
   0% {
     transform: translateY(0);
@@ -121,7 +131,6 @@ body {
     transform: translateY(0);
   }
 }
-
 
 #letters-wrapper {
   margin: 10%;
@@ -143,8 +152,8 @@ body {
 }
 
 .letter {
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--primary-color);
+  color: var(--secondary-color);
 
   -webkit-mask-image: var(--letter-shape);
   mask-image: var(--letter-shape);
@@ -158,14 +167,15 @@ body {
 }
 
 .letter-0 {
-  background: var(--secondary);
-  color: var(--primary);
+  background: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 .text-outline {
-  text-shadow: -1px -1px 0 var(--secondary), 1px -1px 0 var(--secondary),
-    -1px 1px 0 var(--secondary), 1px 1px 0 var(--secondary);
-  color: var(--primary);
+  text-shadow: -1px -1px 0 var(--secondary-color),
+    1px -1px 0 var(--secondary-color), -1px 1px 0 var(--secondary-color),
+    1px 1px 0 var(--secondary-color);
+  color: var(--primary-color);
 }
 
 #solutions {
@@ -333,10 +343,11 @@ body {
 }
 
 button {
+  font-family: var(--font);
   font-size: 100%;
-  border: 2px solid var(--primary);
-  background-color: var(--secondary);
-  color: var(--primary);
+  border: 2px solid var(--primary-color);
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 .icon-button {

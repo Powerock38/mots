@@ -84,37 +84,23 @@ settingsOverlayWrapper.onclick = e => {
 // SETTINGS: SAVE & LOAD
 const cssRoot = document.querySelector(':root')
 
-const settingsPrimaryColor = document.getElementById('settings-primary-color')
-settingsPrimaryColor.value = localStorage.getItem('settings-primary-color') || '#7f2ccb'
-settingsPrimaryColor.onchange = () => {
-  cssRoot.style.setProperty('--primary', settingsPrimaryColor.value)
-  localStorage.setItem('settings-primary-color', settingsPrimaryColor.value)
-}
-settingsPrimaryColor.onchange()
+const settings = [
+  { id: 'primary-color', default: '#7f2ccb' },
+  { id: 'secondary-color', default: '#dddddd' },
+  { id: 'letter-shape', default: 'url(assets/hexagon.svg)' },
+  { id: 'wallpaper', default: 'none' },
+  { id: 'font', default: 'sans-serif' },
+]
 
-const settingsSecondaryColor = document.getElementById('settings-secondary-color')
-settingsSecondaryColor.value = localStorage.getItem('settings-secondary-color') || '#dddddd'
-settingsSecondaryColor.onchange = () => {
-  cssRoot.style.setProperty('--secondary', settingsSecondaryColor.value)
-  localStorage.setItem('settings-secondary-color', settingsSecondaryColor.value)
+for (const setting of settings) {
+  const element = document.getElementById('settings-' + setting.id)
+  element.value = localStorage.getItem('settings-' + setting.id) || setting.default
+  element.onchange = () => {
+    cssRoot.style.setProperty('--' + setting.id, element.value)
+    localStorage.setItem('settings-' + setting.id, element.value)
+  }
+  element.onchange()
 }
-settingsSecondaryColor.onchange()
-
-const settingsLetterShape = document.getElementById('settings-letter-shape')
-settingsLetterShape.value = localStorage.getItem('settings-letter-shape') || 'url(assets/hexagon.svg)'
-settingsLetterShape.onchange = () => {
-  cssRoot.style.setProperty('--letter-shape', settingsLetterShape.value)
-  localStorage.setItem('settings-letter-shape', settingsLetterShape.value)
-}
-settingsLetterShape.onchange()
-
-const settingsWallpaper = document.getElementById('settings-wallpaper')
-settingsWallpaper.value = localStorage.getItem('settings-wallpaper') || 'none'
-settingsWallpaper.onchange = () => {
-  cssRoot.style.setProperty('--wallpaper', settingsWallpaper.value)
-  localStorage.setItem('settings-wallpaper', settingsWallpaper.value)
-}
-settingsWallpaper.onchange()
 
 // SET LETTERS
 const settingsLetters = document.getElementById('settings-letters')
