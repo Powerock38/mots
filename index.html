@@ -42,30 +42,37 @@
 
     <div id="solutions" class="text-outline"></div>
 
-    <div id="giveup-wrapper" class="confirm" data-action="giveUp()">
-      <button>Abandonner ?</button>
-      <div>
-        <button>Abandonner !</button>
-        <button>Non</button>
+    <div id="bottom">
+      <div class="bottom-group">
+        <div id="hint-wrapper" class="confirm" data-action="buyHint()">
+          <button class="icon-button">?</button>
+          <div>
+            <button>Indice (10 pts)</button>
+            <button>Non</button>
+          </div>
+        </div>
+        <button id="settings-button" class="icon-button">⚙</button>
+      </div>
+
+      <div class="bottom-group">
+        <div id="giveup-wrapper" class="confirm" data-action="giveUp()">
+          <button>Abandonner ?</button>
+          <div>
+            <button>Abandonner !</button>
+            <button>Non</button>
+          </div>
+        </div>
+
+        <div id="reset-wrapper" class="confirm" data-action="resetSave()">
+          <button>Recommencer ?</button>
+          <div>
+            <button>Recommencer !</button>
+            <button>Non</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div id="reset-wrapper" class="confirm" data-action="resetSave()">
-      <button>Recommencer ?</button>
-      <div>
-        <button>Recommencer !</button>
-        <button>Non</button>
-      </div>
-    </div>
-
-    <div id="hint-wrapper" class="confirm" data-action="buyHint()">
-      <button class="icon-button">?</button>
-      <div>
-        <button>Indice (10 pts)</button>
-        <button>Non</button>
-      </div>
-    </div>
-    <button id="settings-button" class="icon-button">⚙</button>
     <div id="settings-overlay-wrapper">
       <div id="settings-overlay">
         <label>
