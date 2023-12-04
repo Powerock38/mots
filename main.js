@@ -292,7 +292,7 @@ function buyHint() {
 
     const hint = possibleHints[Math.floor(Math.random() * possibleHints.length)]
 
-    save.points -= HINT_POINTS_VALUE + hint.length
+    save.points -= HINT_POINTS_VALUE
 
     localStorage.setItem('save', JSON.stringify(save))
 
