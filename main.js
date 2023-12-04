@@ -87,6 +87,7 @@ const cssRoot = document.querySelector(':root')
 const settings = [
   { id: 'primary-color', default: '#7f2ccb' },
   { id: 'secondary-color', default: '#dddddd' },
+  { id: 'cheated-color', default: '#ff0000' },
   { id: 'letter-shape', default: 'url(assets/hexagon.svg)' },
   { id: 'wallpaper', default: 'none' },
   { id: 'font', default: 'sans-serif' },
@@ -300,7 +301,7 @@ function buyHint() {
     const wordDisplay = document.createElement('div')
     wordDisplay.innerText = hint.toUpperCase()
     document.body.appendChild(wordDisplay)
-    addRemoveClass(wordDisplay, 'pop-word text-outline', 3000, () => {
+    addRemoveClass(wordDisplay, 'pop-word text-outline cheated', 3000, () => {
       wordDisplay.remove()
     })
 

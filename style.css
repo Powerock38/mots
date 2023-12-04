@@ -204,13 +204,8 @@ body {
   white-space: nowrap;
 }
 
-#solutions > .cheated {
-  text-shadow: -1px -1px 0 var(--primary-color),
-    1px -1px 0 var(--primary-color), -1px 1px 0 var(--primary-color),
-    1px 1px 0 var(--primary-color);
-  color: var(--secondary-color);
-  font-style: italic;
-  font-weight: normal;
+.cheated {
+  color: var(--cheated-color) !important
 }
 
 .pop-word {
