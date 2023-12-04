@@ -124,31 +124,41 @@ settingsLetters.onchange = () => {
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 const WORDLIST = await fetch('mots.txt').then(res => res.text()).then(text => text.split('\n'))
 
-function addSolutionFoundNoUpdate(solution) {
+function addSolutionCheatedNoUpdate(solution) {
   const save = getSave()
-  save.solutionsFound = [...new Set([...save.solutionsFound, solution])]
-  save.points += solution.length
+  save.solutionsCheated = [...new Set([...save.solutionsCheated, solution])]
   localStorage.setItem('save', JSON.stringify(save))
 }
 
 function addSolutionFound(solution) {
-  addSolutionFoundNoUpdate(solution)
-  updateSolutionsFound()
+  const save = getSave()
+  save.solutionsFound = [...new Set([...save.solutionsFound, solution])]
+  save.points += solution.length
+  localStorage.setItem('save', JSON.stringify(save))
+  updateSolutions()
 }
 
-function updateSolutionsFound() {
-  const { solutionsFound } = getSave()
+function updateSolutions() {
+  const { solutionsFound, solutionsCheated } = getSave()
+
+  const solutionsAll = [...new Set([
+    ...solutionsFound.map(solution => ({ solution, cheated: false })),
+    ...solutionsCheated.map(solution => ({ solution, cheated: true }))
+  ])]
 
   solutionsDiv.innerHTML = ''
 
-  solutionsFound.sort()
+  solutionsAll.sort((a, b) => a.solution.localeCompare(b.solution))
 
-  for (const solution of solutionsFound) {
+  for (const sol of solutionsAll) {
     const solutionElement = document.createElement('a')
-    solutionElement.innerText = solution.toUpperCase()
-    solutionElement.href = "https://dictionnaire.lerobert.com/definition/" + solution
+    solutionElement.innerText = sol.solution.toUpperCase()
+    solutionElement.href = "https://dictionnaire.lerobert.com/definition/" + sol.solution
     solutionElement.target = "_blank"
     solutionElement.rel = "noopener noreferrer"
+    if (sol.cheated) {
+      solutionElement.classList.add('cheated')
+    }
     solutionsDiv.appendChild(solutionElement)
   }
 
@@ -214,6 +224,7 @@ function getSave() {
       letters,
       solutions,
       solutionsFound: [],
+      solutionsCheated: [],
       points: 0,
     }
 
@@ -227,6 +238,7 @@ function getSave() {
 
   if (!save.solutionsFound) {
     save.solutionsFound = []
+    save.solutionsCheated = []
     save.points = 0
     localStorage.setItem('save', JSON.stringify(save))
   }
@@ -236,16 +248,21 @@ function getSave() {
     localStorage.setItem('save', JSON.stringify(save))
   }
 
+  if (!save.solutionsCheated) {
+    save.solutionsCheated = []
+    localStorage.setItem('save', JSON.stringify(save))
+  }
+
   console.log(save)
   return save
 }
 
 function checkSolution() {
   const input = wordInput.value.toLowerCase()
-  const { solutions, solutionsFound } = getSave()
+  const { solutions, solutionsFound, solutionsCheated } = getSave()
 
   if (solutions.includes(input)) {
-    if (!solutionsFound.includes(input)) {
+    if (!solutionsFound.includes(input) && !solutionsCheated.includes(input)) {
       addSolutionFound(input)
       wordInput.value = ''
     } else {
@@ -266,7 +283,7 @@ function buyHint() {
   const save = getSave()
 
   if (save.points >= HINT_POINTS_VALUE) {
-    const possibleHints = save.solutions.filter(solution => !save.solutionsFound.includes(solution))
+    const possibleHints = save.solutions.filter(solution => !save.solutionsFound.includes(solution) && !save.solutionsCheated.includes(solution))
 
     if (possibleHints.length === 0) {
       console.log("plus de solutions")
@@ -287,7 +304,8 @@ function buyHint() {
       wordDisplay.remove()
     })
 
-    addSolutionFound(hint)
+    addSolutionCheatedNoUpdate(hint)
+    updateSolutions()
   } else {
     console.log("pas assez de points")
   }
@@ -296,9 +314,9 @@ function buyHint() {
 function giveUp() {
   const { solutions } = getSave()
   for (const solution of solutions) {
-    addSolutionFoundNoUpdate(solution)
+    addSolutionCheatedNoUpdate(solution)
   }
-  updateSolutionsFound()
+  updateSolutions()
 
   wordInput.value = ''
 }
@@ -324,7 +342,7 @@ function game() {
   }
 
   // Init solutions
-  updateSolutionsFound()
+  updateSolutions()
 }
 
 game()

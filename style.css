@@ -203,6 +203,14 @@ body {
   white-space: nowrap;
 }
 
+#solutions > .cheated {
+  text-shadow: -1px -1px 0 var(--primary-color),
+    1px -1px 0 var(--primary-color), -1px 1px 0 var(--primary-color),
+    1px 1px 0 var(--primary-color);
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
 .pop-word {
   animation: pop-word 3s ease-in-out;
   display: flex !important;
