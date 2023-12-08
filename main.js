@@ -127,16 +127,20 @@ const WORDLIST = await fetch('mots.txt').then(res => res.text()).then(text => te
 
 function addSolutionCheatedNoUpdate(solution) {
   const save = getSave()
-  save.solutionsCheated = [...new Set([...save.solutionsCheated, solution])]
-  localStorage.setItem('save', JSON.stringify(save))
+  if (!save.solutionsFound.includes(solution) && !save.solutionsCheated.includes(solution)) {
+    save.solutionsCheated.push(solution)
+    localStorage.setItem('save', JSON.stringify(save))
+  }
 }
 
 function addSolutionFound(solution) {
   const save = getSave()
-  save.solutionsFound = [...new Set([...save.solutionsFound, solution])]
-  save.points += solution.length
-  localStorage.setItem('save', JSON.stringify(save))
-  updateSolutions()
+  if (!save.solutionsFound.includes(solution) && !save.solutionsCheated.includes(solution)) {
+    save.solutionsFound.push(solution)
+    save.points += solution.length
+    localStorage.setItem('save', JSON.stringify(save))
+    updateSolutions()
+  }
 }
 
 function updateSolutions() {
